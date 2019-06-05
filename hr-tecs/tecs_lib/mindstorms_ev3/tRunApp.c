@@ -68,6 +68,7 @@ eRunApp_runapp(CELLIDX idx, const TCHAR* target)
   cFatFile_fread(VAR_irepApp, ATTR_irepAppSize);
   cFatFile_fclose();
   VAR_mrb = mrb_open();
+  //VAR_mrb = mrb_open_TECS(p_cellcb);
   if (VAR_mrb == NULL) {
       return;
   }

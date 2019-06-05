@@ -39,19 +39,25 @@ off_t _lseek_r(void *reent, int fd, off_t pos, int whence) {
  * Override the default allocator
  */
 
+//yamauchi
+extern void *mem_pool;
+
 void *_malloc_r(void *reent, size_t nbytes) {
-	return malloc_ex(nbytes, _kernel_kmm);
+	//return malloc_ex(nbytes, _kernel_kmm);
+	return malloc_ex(nbytes, mem_pool);
 }
 
 void _free_r(void *reent, void *aptr) {
-	free_ex(aptr, _kernel_kmm);
+	//free_ex(aptr, _kernel_kmm);
+	free_ex(aptr, mem_pool);
 }
 
 void *_calloc_r(void *reent, size_t n, size_t s) {
-	return calloc_ex(n, s, _kernel_kmm);
+	//return calloc_ex(n, s, _kernel_kmm);
+	return calloc_ex(n, s, mem_pool);
 }
 
 void *_realloc_r(void *reent, void *aptr, size_t nbytes) {
-	return realloc_ex(aptr, nbytes, _kernel_kmm);
+	//return realloc_ex(aptr, nbytes, _kernel_kmm);
+	return realloc_ex(aptr, nbytes, mem_pool);
 }
-

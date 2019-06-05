@@ -173,7 +173,7 @@ off_t _lseek_r(struct _reent *ptr, int fd, off_t pos, int whence) {
  * Override the default allocator in newlib
  */
 
-static void *mem_pool;
+void *mem_pool;
 
 void _initialize_ev3api_newlib() {
 #if 0

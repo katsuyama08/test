@@ -1,7 +1,7 @@
 import("EV3_common.cdl");
 //[domain(HRP2, "trusted")]
 //[domain(HRP2, "nontrusted")]
-region rAnotherDomainEV3 {
+region rUserVMDomain {
 	cell nMruby::tMruby Mruby {
 		mrubyFile = "$(MRUBY_LIB_DIR)/EV3_common.rb "
 			"$(MRUBY_LIB_DIR)/RTOS.rb "
@@ -24,7 +24,7 @@ region rAnotherDomainEV3 {
 		taskAttribute 	= C_EXP("TA_ACT");
 		priority 		= C_EXP("EV3_MRUBY_VM_PRIORITY");
 		systemStackSize = C_EXP("MRUBY_VM_STACK_SIZE");
-		userStackSize 	= C_EXP("STACK_SIZE");
+		userStackSize 	= C_EXP("MRUBY_VM_STACK_SIZE");
 	};
 
 };

@@ -62,8 +62,8 @@ generate( MrubyBridgePlugin, sReceive, "" );
 
 //Kernel
 cell nMruby::tsKernel BridgeKernel {
-		cTECS = HRP2Kernel.eKernel;
-	};
+	cTECS = HRP2Kernel.eKernel;
+};
 cell tKernel HRP2Kernel {
 };
 
@@ -75,56 +75,11 @@ region rDomainEV3 {
 	};
 	cell tFatDir FatDir {
 	};
-	cell tRunApp RunApp {
-  		cFatFile = FatFile.eFatFile;
-		cInit = VM_TECSInitializer.eInitialize;     /* TECSイニシャライザ */
-  		/* mrubyライブラリ */
-		mrubyLib = "$(MRUBY_LIB_DIR)/EV3_common.rb "
-		"$(MRUBY_LIB_DIR)/RTOS.rb "
-		"$(MRUBY_LIB_DIR)/Speaker.rb "
-		"$(MRUBY_LIB_DIR)/Button.rb "
-		"$(MRUBY_LIB_DIR)/Motor.rb "
-		"$(MRUBY_LIB_DIR)/UltrasonicSensor.rb "
-		"$(MRUBY_LIB_DIR)/GyroSensor.rb "
-		"$(MRUBY_LIB_DIR)/ColorSensor.rb "
-		"$(MRUBY_LIB_DIR)/TouchSensor.rb "
-		"$(MRUBY_LIB_DIR)/LED.rb "
-		"$(MRUBY_LIB_DIR)/LCD.rb "
-		"$(MRUBY_LIB_DIR)/Battery.rb "
-		"$(MRUBY_LIB_DIR)/Balancer.rb "
-		"$(MRUBY_LIB_DIR)/SharedMemory.rb "
-		"$(MRUBY_LIB_DIR)/Receive.rb "
-		"$(APP_PARAM_RB) "
-		"$(APP_PARAM_SET_RB) ";
-	};
-	cell tReceive Receive {
-  	/* ファイルの読み込み操作 */
-  		cFatFile = FatFile.eFatFile;
-		cInit = VM_TECSInitializer.eInitialize;     /* TECSイニシャライザ */
-  		/* mrubyライブラリ */
-	 	mrubyLib = "$(MRUBY_LIB_DIR)/EV3_common.rb "
-		"$(MRUBY_LIB_DIR)/RTOS.rb "
-		"$(MRUBY_LIB_DIR)/Speaker.rb "
-		"$(MRUBY_LIB_DIR)/Button.rb "
-		"$(MRUBY_LIB_DIR)/Motor.rb "
-		"$(MRUBY_LIB_DIR)/UltrasonicSensor.rb "
-		"$(MRUBY_LIB_DIR)/GyroSensor.rb "
-		"$(MRUBY_LIB_DIR)/ColorSensor.rb "
-		"$(MRUBY_LIB_DIR)/TouchSensor.rb "
-		"$(MRUBY_LIB_DIR)/LED.rb "
-		"$(MRUBY_LIB_DIR)/LCD.rb "
-		"$(MRUBY_LIB_DIR)/Battery.rb "
-		"$(MRUBY_LIB_DIR)/Balancer.rb "
-		"$(MRUBY_LIB_DIR)/SharedMemory.rb "
-		"$(MRUBY_LIB_DIR)/Receive.rb "
-		"$(APP_PARAM_RB) "
-		"$(APP_PARAM_SET_RB) ";
-	};
-	//LCD
+	// LCD
 	cell tLCD LCD {
 		cButton = Button.eButton;
 	};
-	//Button
+	// Button
 	cell tButton Button {
 	};
 	cell tEV3Platform EV3Platform {
@@ -142,7 +97,7 @@ region rDomainEV3 {
 
 //[domain(HRP2, "trusted")]
 [domain(HRP2, "nontrusted")]
-region rAnotherDomainEV3 {
+region rUserVMDomain {
 	// Motor ブリッジセル
 	cell nMruby::tsMotor BridgeMotorA {
 		cTECS = MotorA.eMotor;
@@ -244,10 +199,10 @@ region rAnotherDomainEV3 {
 		cTECS = rDomainEV3::FatDir.eFatDir;
 	};
 	cell nMruby::tsRunApp BridgeRunApp {
-		cTECS = rDomainEV3::RunApp.eRunApp;
+		cTECS = RunApp.eRunApp;
 	};
 	cell nMruby::tsReceive BridgeReceive {
-		cTECS = rDomainEV3::Receive.eReceive;
+		cTECS = Receive.eReceive;
 	};
 	//Motor
 	cell tMotor MotorA {
@@ -326,5 +281,50 @@ region rAnotherDomainEV3 {
 	cell tBalancer Balancer {
 	};
 	cell tSharedMemory SharedMemory {
+	};
+	cell tRunApp RunApp {
+  		cFatFile = rDomainEV3::FatFile.eFatFile;
+		cInit = VM_TECSInitializer.eInitialize;     /* TECSイニシャライザ */
+  		/* mrubyライブラリ */
+		mrubyLib = "$(MRUBY_LIB_DIR)/EV3_common.rb "
+		"$(MRUBY_LIB_DIR)/RTOS.rb "
+		"$(MRUBY_LIB_DIR)/Speaker.rb "
+		"$(MRUBY_LIB_DIR)/Button.rb "
+		"$(MRUBY_LIB_DIR)/Motor.rb "
+		"$(MRUBY_LIB_DIR)/UltrasonicSensor.rb "
+		"$(MRUBY_LIB_DIR)/GyroSensor.rb "
+		"$(MRUBY_LIB_DIR)/ColorSensor.rb "
+		"$(MRUBY_LIB_DIR)/TouchSensor.rb "
+		"$(MRUBY_LIB_DIR)/LED.rb "
+		"$(MRUBY_LIB_DIR)/LCD.rb "
+		"$(MRUBY_LIB_DIR)/Battery.rb "
+		"$(MRUBY_LIB_DIR)/Balancer.rb "
+		"$(MRUBY_LIB_DIR)/SharedMemory.rb "
+		"$(MRUBY_LIB_DIR)/Receive.rb "
+		"$(APP_PARAM_RB) "
+		"$(APP_PARAM_SET_RB) ";
+	};
+	cell tReceive Receive {
+  	/* ファイルの読み込み操作 */
+  		cFatFile = rDomainEV3::FatFile.eFatFile;
+		cInit = VM_TECSInitializer.eInitialize;     /* TECSイニシャライザ */
+  		/* mrubyライブラリ */
+	 	mrubyLib = "$(MRUBY_LIB_DIR)/EV3_common.rb "
+		"$(MRUBY_LIB_DIR)/RTOS.rb "
+		"$(MRUBY_LIB_DIR)/Speaker.rb "
+		"$(MRUBY_LIB_DIR)/Button.rb "
+		"$(MRUBY_LIB_DIR)/Motor.rb "
+		"$(MRUBY_LIB_DIR)/UltrasonicSensor.rb "
+		"$(MRUBY_LIB_DIR)/GyroSensor.rb "
+		"$(MRUBY_LIB_DIR)/ColorSensor.rb "
+		"$(MRUBY_LIB_DIR)/TouchSensor.rb "
+		"$(MRUBY_LIB_DIR)/LED.rb "
+		"$(MRUBY_LIB_DIR)/LCD.rb "
+		"$(MRUBY_LIB_DIR)/Battery.rb "
+		"$(MRUBY_LIB_DIR)/Balancer.rb "
+		"$(MRUBY_LIB_DIR)/SharedMemory.rb "
+		"$(MRUBY_LIB_DIR)/Receive.rb "
+		"$(APP_PARAM_RB) "
+		"$(APP_PARAM_SET_RB) ";
 	};
 };
